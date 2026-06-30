@@ -93,6 +93,39 @@ lark-cli mindnotes nodes create \
 [{"element_type":"text","text":{"content":"节点内容"}}]
 ```
 
+### 节点图片（`nodes[].images`）
+
+`nodes[].images` 接收的是**图片 token**，不是本地文件路径，也不是 URL。
+
+```bash
+# 先上传图片，拿到 token
+lark-cli docs +media-upload --file ./image.png --parent-type mindnote_image --parent-node <mindnote_token>
+
+# 再把 token 写进节点
+lark-cli mindnotes nodes create \
+  --mindnote-id "D05hbLa3dm08GbnerjwbvNmUcgf" \
+  --data '{
+    "client_token":"fe599b60-450f-46ff-b2ef-9f6675625b99",
+    "nodes":[
+      {
+        "node_id":"node_existing123",
+        "images":[
+          {"token":"img_abc123"}
+        ]
+      }
+    ]
+  }'
+```
+
+参数说明：
+
+| 参数 | 必填 | 说明 |
+|------|------|------|
+| `--file` | 是 | 本地图片路径 |
+| `--parent-type` | 是 | 上传目标类型；图片使用 `mindnote_image` |
+| `--parent-node` | 是 | 传 Mindnote 的 token |
+| `nodes[].images[].token` | 是 | 上传后返回的图片 token |
+
 ## 推荐工作流
 
 1. 先判断用户目标是不是“新建一个思维笔记”。
